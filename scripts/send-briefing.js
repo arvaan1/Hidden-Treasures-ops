@@ -87,7 +87,8 @@ function buildDigest(profiles, departments, sheets){
         var tasks = entry.tasks.slice().sort(function(a,b){ return (a.start||'9999').localeCompare(b.start||'9999'); });
         lines.push('  ' + entry.profile.name + ':');
         tasks.forEach(function(t){
-          var overdue = t.end && t.end < todayISO();
+          var dueDate = t.end || t.start;
+          var overdue = !t.frequency && dueDate && dueDate < todayISO();
           var freq = t.frequency ? ' (' + t.frequency + ')' : '';
           lines.push('    - ' + fmtDateDisplay(t.start) + ' - ' + (t.text||'(untitled)') + freq + (overdue ? '  [OVERDUE]' : ''));
         });
